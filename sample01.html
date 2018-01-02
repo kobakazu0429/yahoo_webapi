@@ -1,0 +1,46 @@
+<html>
+<head>
+  <title>sample01</title>
+</head>
+<body>
+  <input name="query" id="query" value="" >
+  <input type="button" value="実行" onclick="con()" >
+  <div id="alpha"></div>
+  <div id="list">
+    <ul></ul>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script>
+    function con() {
+      $(function(){
+        // Import
+        var str       = $("#query").val()
+        console.log()
+
+        // Config
+        var appid     = '<Your Application ID>';
+
+        // Encode
+        appid         = 'appid=' + appid;
+        sentence      = '&sentence=' + str;
+
+        $.ajax({
+          url:'https://jlp.yahooapis.jp/FuriganaService/V1/furigana?'+ appid+ sentence,
+          type:'GET',
+          dataType:'xml',
+          timeout:1000,
+          crossDomain : true,
+          error:function() {
+            alert("ロード失敗");
+          },
+          success:function(xml){
+            $(xml).find("Word").each(function() {
+              $("#list ul").append('<li>' + $(this).find('Word>Roman').text() +'</li>');
+            });
+          }
+        });
+      });
+    };
+  </script>
+</body>
+</html>
